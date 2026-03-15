@@ -1,0 +1,18 @@
+{
+  "name": "OnaFlix Mobile BFF",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker": {}
+  },
+  "forwardPorts": [3005, 6379],
+  "portsAttributes": {
+    "3005": {
+      "label": "Mobile BFF",
+      "onAutoForward": "notify"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent"
+    }
+  }
+}
