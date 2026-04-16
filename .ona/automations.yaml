@@ -1,0 +1,29 @@
+tasks:
+  install-deps:
+    name: Install dependencies
+    description: Install npm dependencies for the project.
+    command: |
+      npm install
+    triggeredBy:
+      - postDevcontainerStart
+
+services:
+  redis:
+    name: Redis
+    description: Redis cache server running in Docker.
+    commands:
+      start: |
+        docker run --rm --name onaflix-redis -p 6379:6379 redis:7-alpine
+      ready: |
+        docker exec onaflix-redis redis-cli ping | grep -q PONG
+      stop: |
+        docker stop onaflix-redis
+
+  dev-server:
+    name: Dev Server
+    description: Express development server with ts-node.
+    commands:
+      start: |
+        npm run dev
+      ready: |
+        curl -sf http://localhost:3005/health
