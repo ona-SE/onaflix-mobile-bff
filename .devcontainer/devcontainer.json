@@ -1,0 +1,26 @@
+{
+  "name": "OnaFlix Mobile BFF",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/itsmechlark/features/redis-server:1": {}
+  },
+  "forwardPorts": [3005],
+  "portsAttributes": {
+    "3005": {
+      "label": "Mobile BFF",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

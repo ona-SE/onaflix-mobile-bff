@@ -1,0 +1,36 @@
+services:
+  mobile-bff:
+    name: Mobile BFF Dev Server
+    description: Express dev server with ts-node
+    triggeredBy:
+      - postDevcontainerStart
+    commands:
+      start: npm run dev
+      ready: curl -s http://localhost:3005/health
+
+  redis:
+    name: Redis Server
+    description: Redis cache for the BFF layer
+    triggeredBy:
+      - postDevcontainerStart
+    commands:
+      start: redis-server --save "" --appendonly no
+      ready: redis-cli ping
+
+tasks:
+  install-dependencies:
+    name: Install Dependencies
+    description: Install npm packages
+    triggeredBy:
+      - postDevcontainerStart
+    command: npm install
+
+  build:
+    name: Build TypeScript
+    description: Compile TypeScript to JavaScript
+    command: npm run build
+
+  test:
+    name: Run Tests
+    description: Run Jest test suite
+    command: npm test
