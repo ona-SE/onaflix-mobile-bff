@@ -1,0 +1,33 @@
+tasks:
+  install-deps:
+    name: Install dependencies
+    description: Install npm packages.
+    command: |
+      npm install
+    triggeredBy:
+      - postDevcontainerStart
+
+services:
+  redis:
+    name: Redis
+    description: Redis cache for the BFF service.
+    commands:
+      start: |
+        docker run --rm -t --name redis -p 6379:6379 redis:7-alpine
+      ready: |
+        docker exec redis redis-cli ping
+      stop: |
+        docker stop redis
+    triggeredBy:
+      - postDevcontainerStart
+
+  dev-server:
+    name: Dev Server
+    description: Run the Express BFF in development mode with ts-node.
+    commands:
+      start: |
+        npm run dev
+      ready: |
+        curl -sf http://localhost:3005/health
+    triggeredBy:
+      - postDevcontainerStart
