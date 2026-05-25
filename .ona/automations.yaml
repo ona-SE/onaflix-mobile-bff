@@ -1,0 +1,26 @@
+tasks:
+  install-deps:
+    name: Install dependencies
+    description: Install npm dependencies for the project.
+    command: |
+      npm install
+    triggeredBy:
+      - postDevcontainerStart
+
+  start-redis:
+    name: Start Redis
+    description: Start Redis container for local caching layer.
+    command: |
+      docker run -d --name redis -p 6379:6379 redis:7-alpine
+    triggeredBy:
+      - postDevcontainerStart
+    dependsOn:
+      - install-deps
+
+services:
+  dev-server:
+    name: Dev Server
+    description: Express BFF dev server with ts-node.
+    commands:
+      start: npm run dev
+      ready: curl -sf http://localhost:3005/health
