@@ -1,0 +1,36 @@
+services:
+  redis:
+    name: Redis
+    description: Local Redis instance used by the mobile BFF cache layer
+    triggeredBy:
+      - postDevcontainerStart
+    commands:
+      start: redis-server --port 6379
+      ready: redis-cli -p 6379 ping
+
+  app:
+    name: Mobile BFF
+    description: Express backend-for-frontend dev server (ts-node with reload)
+    triggeredBy:
+      - postDevcontainerStart
+    commands:
+      start: npm run dev
+      ready: curl -sf http://localhost:3005/health
+
+tasks:
+  install:
+    name: Install dependencies
+    description: Install npm dependencies
+    triggeredBy:
+      - postDevcontainerStart
+    command: npm install
+
+  build:
+    name: Build
+    description: Compile TypeScript to dist/
+    command: npm run build
+
+  test:
+    name: Test
+    description: Run the Jest test suite
+    command: npm test

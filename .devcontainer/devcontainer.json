@@ -1,0 +1,31 @@
+{
+  "name": "onaflix-mobile-bff",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y redis-server && npm install",
+  "forwardPorts": [3005, 6379],
+  "portsAttributes": {
+    "3005": {
+      "label": "Mobile BFF",
+      "onAutoForward": "notify"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "orta.vscode-jest"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "REDIS_URL": "redis://localhost:6379"
+  }
+}
